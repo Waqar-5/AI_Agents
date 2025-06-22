@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>🤖 SmartChat with OpenRouter</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background: #222; color: #eee; text-align: center; padding: 50px; }
+    #chat-box { max-width: 700px; margin: auto; background: #333; padding: 20px; border-radius: 12px; box-shadow: 0 0 15px rgba(0,0,0,0.5); }
+    input, button, select { padding: 10px; font-size: 16px; margin-top: 10px; width: 80%; border: none; border-radius: 5px; }
+    input { background: #444; color: white; }
+    select { background: #444; color: white; }
+    button { background: #00bfa5; color: white; cursor: pointer; }
+    button:hover { background: #008c7a; }
+    .reply, .user-msg { margin-top: 15px; background: #2b2b2b; padding: 10px; border-radius: 8px; white-space: pre-wrap; text-align: left; }
+    .user-msg { color: #ffd966; }
+    .reply { color: #afffaf; }
+    .typing { animation: blink 1s steps(1, start) infinite; }
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <h1>🤖 OpenRouter Smart Chat</h1>
+  <div id="chat-box">
+    <input type="text" id="msg" placeholder="Ask me anything..." />
+    <br>
+   <select id="model">
+  <option value="mistralai/mixtral-8x7b-instruct">Mixtral</option>
+  <!-- <option value="openchat/openchat-3.5-1210">OpenChat 3.5</option> -->
+  <option value="gryphe/mythomax-l2-13b">MythoMax</option>
+</select>
+
+    <br>
+    <button onclick="sendMessage()">Send</button>
+    <div id="history"></div>
+  </div>
+
+  <script>
+    async function sendMessage() {
+      const msg = document.getElementById("msg").value;
+      const model = document.getElementById("model").value;
+      if (!msg.trim()) return;
+
+      const historyBox = document.getElementById("history");
+
+      // Show user message
+      const userDiv = document.createElement("div");
+      userDiv.className = "user-msg";
+      userDiv.innerText = "🧑‍💻 You: " + msg;
+      historyBox.appendChild(userDiv);
+
+      // Show thinking animation
+      const replyDiv = document.createElement("div");
+      replyDiv.className = "reply typing";
+      replyDiv.innerText = "🤖 Bot is thinking...";
+      historyBox.appendChild(replyDiv);
+
+      const res = await fetch("/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: msg, model })
+      });
+
+      const data = await res.json();
+
+      // Update bot reply
+      replyDiv.classList.remove("typing");
+      replyDiv.innerText = "🤖 Bot: " + (data.reply || data.error);
+
+      // Scroll to bottom
+      historyBox.scrollTop = historyBox.scrollHeight;
+      document.getElementById("msg").value = "";
+    }
+  </script>
+</body>
+</html>

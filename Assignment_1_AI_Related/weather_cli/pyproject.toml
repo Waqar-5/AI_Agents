@@ -1,0 +1,26 @@
+[project]
+name = "weather-cli"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "waqar-5", email = "wa5134810@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "requests>=2.32.4",
+    "rich>=14.0.0",
+]
+
+[project.scripts]
+weather-cli = "weather_cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "black>=25.1.0",
+    "pytest>=8.4.1",
+]
