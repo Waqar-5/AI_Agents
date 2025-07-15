@@ -1,16 +1,12 @@
-import os
+here is my code apply import os
 from datetime import datetime
 from dotenv import load_dotenv
 from litellm import completion
 
-load_dotenv()  # Load from .env first
+load_dotenv()
+os.environ["LITELLM_GEMINI_API_KEY"] = os.getenv("GEMINI_API_KEY")
 
-gemini_key = os.getenv("GEMINI_API_KEY")
-if not gemini_key:
-    raise ValueError("❌ Environment variable 'GEMINI_API_KEY' is missing in your .env file.")
-
-os.environ["LITELLM_GEMINI_API_KEY"] = gemini_key  # ✅ Now safe to assign
-# Journal file
+# Emotion journal file
 JOURNAL_FILE = "mood_journal.txt"
 
 def analyze_mood(entry: str) -> str:
@@ -46,3 +42,33 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+"""
+# # import os
+# # from litellm import completion
+# # from dotenv import load_dotenv
+
+
+# # load_dotenv()
+
+# # def main():
+# #     api_key = os.getenv("GEMINI_API_KEY")
+
+# #     response = completion(
+# #         model = "gemini/gemini-1.5-flash",
+# #         messages=[
+# #             {
+# #                 "role": "user",
+# #                 "content": "Who is the founder of Pakistan?"
+# #             }
+# #         ],
+# #     )
+
+# #     print(response['choices'][0]['message']['content'])
+
+# # if __name__ =="__main__":
+# #     main()
+
+"""
