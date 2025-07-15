@@ -3,13 +3,13 @@ from datetime import datetime
 from dotenv import load_dotenv
 from litellm import completion
 
-# Load environment variables
-load_dotenv()
+load_dotenv()  # Load from .env first
+
 gemini_key = os.getenv("GEMINI_API_KEY")
 if not gemini_key:
-    raise ValueError("❌ 'GEMINI_API_KEY' not found in your .env file.")
-os.environ["LITELLM_GEMINI_API_KEY"] = gemini_key
+    raise ValueError("❌ Environment variable 'GEMINI_API_KEY' is missing in your .env file.")
 
+os.environ["LITELLM_GEMINI_API_KEY"] = gemini_key  # ✅ Now safe to assign
 # Journal file
 JOURNAL_FILE = "mood_journal.txt"
 
